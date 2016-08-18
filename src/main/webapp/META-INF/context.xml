@@ -1,0 +1,14 @@
+<Context>
+    <Resource name="jdbc/CMSEntityManagerFactory"
+              auth="Container"
+              factory="com.zaxxer.hikari.HikariJNDIFactory"
+              type="javax.sql.DataSource"
+              minimumIdle="20"
+              maximumPoolSize="100"
+              connectionTimeout="300000"
+              dataSourceClassName="oracle.jdbc.pool.OracleDataSource"
+              dataSource.implicitCachingEnabled="true"
+              dataSource.user="system"
+              dataSource.password="oracle"
+              dataSource.url="jdbc:oracle:thin:@localhost:49161:xe"/>
+</Context>
