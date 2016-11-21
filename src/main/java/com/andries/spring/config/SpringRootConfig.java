@@ -1,7 +1,9 @@
 package com.andries.spring.config;
 
 import com.andries.services.Services;
+import com.andries.services.impl.repositories.carriers.JpaRepositories;
 import org.springframework.context.annotation.*;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -18,6 +20,7 @@ import javax.persistence.EntityManagerFactory;
 @EnableAspectJAutoProxy
 @EnableAsync
 @EnableTransactionManagement
+@EnableJpaRepositories(basePackageClasses = {JpaRepositories.class})
 @ComponentScan(basePackageClasses = {
         Services.class
 }, excludeFilters = {

@@ -7,9 +7,12 @@
         <non-jta-data-source>java:comp/env/jdbc/CMSEntityManagerFactory</non-jta-data-source>
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect"/>
+            <property name="hibernate.id.new_generator_mappings" value="true"/>
             <property name="hibernate.show_sql" value="false"/>
-            <property name="hibernate.format_sql" value="false"/>
-            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.format_sql" value="true"/>
+            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
+            <property name="hibernate.connection.datasource" value="java:comp/env/jdbc/CMSEntityManagerFactory"/>
+            <!-- <property name="hibernate.connection.release_mode" value="after_transaction" /> -->
         </properties>
     </persistence-unit>
 
