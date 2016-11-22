@@ -17,8 +17,8 @@ import java.util.List;
  * Created by Andries on 8/18/16.
  */
 @RepositoryQualifier(value = RepositoryType.SPRING_MANAGED_TRANSACTIONAL)
-//@Transactional
-//@Repository
+@Transactional
+@Repository
 @Service
 public class SpringManagedTransactionalCarrierRepository implements CarrierRepository {
 
@@ -28,23 +28,18 @@ public class SpringManagedTransactionalCarrierRepository implements CarrierRepos
     private EntityManager em;
 
     @Override
-    public Carrier saveCarrier(Carrier carrier) {
+    public Carrier save(Carrier carrier) {
 
-        logger.info("INVOKING saveCarrier(..) with Carrier: {}", carrier);
+        logger.info("INVOKING save(..) with Carrier: {}", carrier);
 
-        //return  em
-        //        .merge(carrier);
-
-        em.persist(carrier);
-
-        return carrier;
+        return  em.merge(carrier);
 
     }
 
     @Override
-    public List<Carrier> listAllCarriers() {
+    public List<Carrier> findAll() {
 
-        logger.info("INVOKING listAllCarriers()..");
+        logger.info("INVOKING findAll()..");
 
         TypedQuery<Carrier> query = em
                 .createNamedQuery("Carrier.findAll", Carrier.class);
@@ -57,7 +52,7 @@ public class SpringManagedTransactionalCarrierRepository implements CarrierRepos
     }
 
     @Override
-    public Carrier getCarrier(Long id) {
+    public Carrier getOne(Long id) {
 
         logger.info("INVOKING getCarrier(..) with ID: {}", id);
 

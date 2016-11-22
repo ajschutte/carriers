@@ -22,28 +22,28 @@ public class CarrierController {
 
     private static final Logger logger = LoggerFactory.getLogger(CarrierController.class);
 
-    @RepositoryQualifier(value = RepositoryType.SPRING_MANAGED_TRANSACTIONAL)
+    /**
+     * Modify the value of the qualifier to pick which implementation gets used...
+     */
+    @RepositoryQualifier(value = RepositoryType.SPRING_MANAGED_GENERATED)
     @Autowired
     private CarrierRepository repository;
 
-    @Autowired
-    private SpringGeneratedCarrierRepository springRepository;
-
+    /**
+     * This silly implementation creates a new Carrier, then returns a list of all current Carriers...
+     *
+     * @param name Carrier Name
+     * @return Carrier
+     */
     @RequestMapping(value = "/carrier/{name}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Carrier getCarrier(@PathVariable(value="name") String name) {
 
         try {
             logger.info("INVOKING getCarrier(..)..Carrier Passed: {}..", name);
 
-            //Carrier carrier = repository.saveCarrier(new Carrier(name));
+            Carrier carrier = repository.save(new Carrier(name));
 
-            Carrier carrier = springRepository.save(new Carrier(name));
-
-            //for (Carrier savedCarrier : repository.listAllCarriers()) {
-            //    logger.info("Carrier found: {}..", savedCarrier);
-           // }
-
-            for (Carrier savedCarrier : springRepository.findAll()) {
+            for (Carrier savedCarrier : repository.findAll()) {
                 logger.info("Carrier found: {}..", savedCarrier);
             }
 

@@ -9,10 +9,10 @@ import java.util.List;
  */
 public interface CarrierRepository {
 
-    List<Carrier> listAllCarriers();
+    List<Carrier> findAll();
 
-    Carrier getCarrier(Long id);
+    Carrier getOne(Long id);
 
-    Carrier saveCarrier(Carrier carrier);
+    Carrier save(Carrier carrier);
 
 }

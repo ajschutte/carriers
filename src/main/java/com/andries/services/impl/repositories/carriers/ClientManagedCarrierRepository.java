@@ -24,9 +24,9 @@ public class ClientManagedCarrierRepository implements CarrierRepository {
     private static final Logger logger = LoggerFactory.getLogger(ClientManagedCarrierRepository.class);
 
     @Override
-    public Carrier saveCarrier(Carrier carrier) {
+    public Carrier save(Carrier carrier) {
 
-        logger.info("INVOKING saveCarrier(..) with Carrier: {}", carrier);
+        logger.info("INVOKING save(..) with Carrier: {}", carrier);
 
         MGRequest mgr = null;
 
@@ -36,7 +36,7 @@ public class ClientManagedCarrierRepository implements CarrierRepository {
         }
         catch (Throwable th) {
 
-            logger.error("ERROR invoking saveCarrier(..) with Carrier..", th);
+            logger.error("ERROR invoking save(..) with Carrier..", th);
 
             throw new ResourceCreateOrUpdateFailedException("Carrier could not be saved..."+carrier, th);
         }
@@ -66,7 +66,7 @@ public class ClientManagedCarrierRepository implements CarrierRepository {
     }
 
     @Override
-    public List<Carrier> listAllCarriers() {
+    public List<Carrier> findAll() {
 
         MGRequest mgr  = new MGRequest();
         EntityManager em = mgr.getEntityManager();
@@ -92,7 +92,7 @@ public class ClientManagedCarrierRepository implements CarrierRepository {
     }
 
     @Override
-    public Carrier getCarrier(Long id) {
+    public Carrier getOne(Long id) {
         return null;
     }
 
