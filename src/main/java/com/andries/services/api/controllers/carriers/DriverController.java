@@ -40,13 +40,8 @@ public class DriverController {
         try {
             logger.info("INVOKING getDriver(..)..Driver Passed: {}..", name);
 
-            Driver driver = repository.save(new Driver(name));
+            return repository.save(new Driver(name));
 
-            for (Driver savedDriver : repository.findAll()) {
-                logger.info("Driver found: {}..", savedDriver);
-            }
-
-            return driver;
         }
         catch (Exception exx) {
             logger.error("ERROR getDriver(..)..", exx);

@@ -3,6 +3,7 @@
               auth="Container"
               factory="com.zaxxer.hikari.HikariJNDIFactory"
               type="javax.sql.DataSource"
+              autoCommit="false"
               poolName="AndriesPool2"
               registerMbeans="true"
               leakDetectionThreshold="30000"

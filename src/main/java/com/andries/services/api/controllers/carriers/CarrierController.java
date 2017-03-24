@@ -38,15 +38,11 @@ public class CarrierController {
     public Carrier getCarrier(@PathVariable(value="name") String name) {
 
         try {
+
             logger.info("INVOKING getCarrier(..)..Carrier Passed: {}..", name);
 
-            Carrier carrier = repository.save(new Carrier(name));
+            return repository.save(new Carrier(name));
 
-            for (Carrier savedCarrier : repository.findAll()) {
-                logger.info("Carrier found: {}..", savedCarrier);
-            }
-
-            return carrier;
         }
         catch (Exception exx) {
             logger.error("ERROR getCarrier(..)..", exx);

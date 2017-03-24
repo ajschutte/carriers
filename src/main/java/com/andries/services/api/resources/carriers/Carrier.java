@@ -1,5 +1,7 @@
 package com.andries.services.api.resources.carriers;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.util.Objects;
 
@@ -14,8 +16,17 @@ import java.util.Objects;
 public class Carrier {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="carrier_seq")
-    @SequenceGenerator(name="carrier_seq", sequenceName = "CARRIER_SEQ", initialValue = 1, allocationSize = 3)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="pooled")
+    @GenericGenerator(
+            name = "pooled",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @org.hibernate.annotations.Parameter(name = "sequence_name", value = "CARRIER_SEQ"),
+                    @org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
+                    @org.hibernate.annotations.Parameter(name = "increment_size", value = "2"),
+                    @org.hibernate.annotations.Parameter(name = "optimizer", value = "pooled"),
+            }
+    )
     @Column(name = "CARRIER_ID")
     private Long id;
 

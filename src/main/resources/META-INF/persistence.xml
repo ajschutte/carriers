@@ -7,7 +7,7 @@
         <non-jta-data-source>java:comp/env/jdbc/CMSEntityManagerFactory</non-jta-data-source>
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect"/>
-            <property name="hibernate.id.new_generator_mappings" value="false"/>
+            <property name="hibernate.id.new_generator_mappings" value="true"/>
             <property name="hibernate.prefer_sequence_per_entity" value="true"/>
             <property name="hibernate.show_sql" value="false"/>
             <property name="hibernate.format_sql" value="true"/>

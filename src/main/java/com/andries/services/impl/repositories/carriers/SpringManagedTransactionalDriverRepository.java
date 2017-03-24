@@ -72,7 +72,7 @@ public class SpringManagedTransactionalDriverRepository implements DriverReposit
 
         logger.info("INVOKING nextId()..");
 
-        return ((BigDecimal)em.createNativeQuery("select CARRIER_SEQ.NEXTVAL from DUAL")
+        return ((BigDecimal)em.createNativeQuery("select DRIVER_SEQ.NEXTVAL from DUAL")
                 .getSingleResult()).longValue();
 
     }
@@ -82,7 +82,7 @@ public class SpringManagedTransactionalDriverRepository implements DriverReposit
 
         logger.info("INVOKING currentId()..");
 
-        return ((BigDecimal)em.createNativeQuery("select CARRIER_SEQ.CURRVAL from DUAL")
+        return ((BigDecimal)em.createNativeQuery("select DRIVER_SEQ.CURRVAL from DUAL")
                 .getSingleResult()).longValue();
 
     }

@@ -50,21 +50,25 @@ public class CarrierResourceIT {
     @Test
     public void fetchCarrierByResourceLocationExistingCarrierMatchingCarrierReturned() throws Exception {
 
-        for (int i = 1; i < 4; i++) {
+        for (int i = 1; i < 5; i++) {
+
+            //Long carrierNextId = fetchNextCarrierId();
+            //Long driverNextId = fetchNextDriverId();
             Carrier carrier = createAndFetchCarrier();
             Driver driver = createAndFetchDriver();
             Long carrierCurrId = fetchCurrentCarrierId();
-            Long carrierNextId = fetchNextCarrierId();
             Long driverCurrId = fetchCurrentDriverId();
-            Long driverNextId = fetchNextDriverId();
 
-            System.out.println("CREATED CARRIER: " + i + " ID: " + carrier.getId());
-            System.out.println("CURRENT CARRIER SEQ VAL: " + carrierCurrId);
-            System.out.println("NEXT CARRIER SEQ VAL: " + carrierNextId);
+
+            //System.out.println("\n");
+            //System.out.println("nextVal() on CARRIER SEQ VAL: " + carrierNextId);
+            //System.out.println("nextVal() on DRIVER SEQ VAL: " + driverNextId);
             System.out.println("\n");
-            System.out.println("CREATED DRIVER : " + i + " ID: " + driver.getId());
-            System.out.println("CURRENT DRIVER SEQ VAL: " + driverCurrId);
-            System.out.println("NEXT DRIVER SEQ VAL: " + driverNextId);
+            System.out.println("CREATED CARRIER: " + i + " with ID: " + carrier.getId());
+            System.out.println("CREATED DRIVER : " + i + " with ID: " + driver.getId());
+            System.out.println("\n");
+            System.out.println("currVal() on CARRIER SEQ VAL: " + carrierCurrId);
+            System.out.println("currVal() on DRIVER SEQ VAL: " + driverCurrId);
             System.out.println("\n");
 
         }
