@@ -4,7 +4,6 @@ import com.andries.services.api.repositories.carriers.CarrierRepository;
 import com.andries.services.api.resources.carriers.Carrier;
 import com.andries.services.impl.qualifiers.RepositoryQualifier;
 import com.andries.services.impl.qualifiers.RepositoryType;
-import com.andries.services.impl.repositories.carriers.SpringGeneratedCarrierRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +24,7 @@ public class CarrierController {
     /**
      * Modify the value of the qualifier to pick which implementation gets used...
      */
-    @RepositoryQualifier(value = RepositoryType.SPRING_MANAGED_GENERATED)
+    @RepositoryQualifier(value = RepositoryType.SPRING_MANAGED_TRANSACTIONAL)
     @Autowired
     private CarrierRepository repository;
 
@@ -51,6 +50,34 @@ public class CarrierController {
         }
         catch (Exception exx) {
             logger.error("ERROR getCarrier(..)..", exx);
+            throw exx;
+        }
+    }
+
+    @RequestMapping(value = "/carrier-id/currentval", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Long getCarrierIdCurrentVal() {
+
+        try {
+            logger.info("INVOKING getCarrierIdCurrentVal(..)..");
+
+            return repository.currentId();
+        }
+        catch (Exception exx) {
+            logger.error("ERROR getCarrierIdCurrentVal(..)..", exx);
+            throw exx;
+        }
+    }
+
+    @RequestMapping(value = "/carrier-id/nextval", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Long getCarrierIdNextVal() {
+
+        try {
+            logger.info("INVOKING getCarrierIdNextVal(..)..");
+
+            return repository.nextId();
+        }
+        catch (Exception exx) {
+            logger.error("ERROR getCarrierIdNextVal(..)..", exx);
             throw exx;
         }
     }

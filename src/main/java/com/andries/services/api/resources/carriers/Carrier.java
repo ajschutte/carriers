@@ -7,16 +7,15 @@ import java.util.Objects;
  * Created by Andries on 8/18/16.
  */
 @NamedQueries({
-        @NamedQuery(name="Carrier.findAll",
-                query="SELECT c FROM Carrier c"),
+        @NamedQuery(name="Carrier.findAll", query="SELECT c FROM Carrier c"),
 })
 @Entity
 @Table(name = "CARRIERS")
 public class Carrier {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="andries_seq")
-    @SequenceGenerator(name="andries_seq", sequenceName = "ANDRIES_SEQ", initialValue=1, allocationSize=100)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="carrier_seq")
+    @SequenceGenerator(name="carrier_seq", sequenceName = "CARRIER_SEQ", initialValue = 1, allocationSize = 3)
     @Column(name = "CARRIER_ID")
     private Long id;
 

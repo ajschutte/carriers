@@ -21,6 +21,10 @@
         <level value="DEBUG"/>
         <appender-ref ref="HIKARI-CONSOLE"/>
     </logger>
+    <logger name="org.hibernate.SQL" additivity="false">
+        <level value="DEBUG"/>
+        <appender-ref ref="HIKARI-CONSOLE"/>
+    </logger>
     <root>
         <priority value="INFO"/>
         <appender-ref ref="CONSOLE"/>

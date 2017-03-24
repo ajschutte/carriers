@@ -1,5 +1,7 @@
 package com.andries.services.api.controllers.carriers;
 
+import com.andries.services.api.resources.carriers.Carrier;
+import com.andries.services.api.resources.carriers.Driver;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -30,7 +32,7 @@ public class CarrierResourceIT {
     private WebTarget tut;
     ObjectMapper mapper;
 
-    private static final int N_THREADS = 20;
+    private static final int N_THREADS = 10;
 
     private static final int LATCH_TIMEOUT = 30;
 
@@ -39,7 +41,7 @@ public class CarrierResourceIT {
         this.client = ClientBuilder.newClient();
         //client.property(ClientProperties.CONNECT_TIMEOUT, 100);
         //client.property(ClientProperties.READ_TIMEOUT, 500);
-        this.tut = this.client.target("http://localhost:8080/carriers/api/carrier");
+        this.tut = this.client.target("http://localhost:8080/carriers/api");
         mapper =new ObjectMapper();
         mapper.configure(SerializationFeature.INDENT_OUTPUT, true);
         mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
@@ -48,22 +50,42 @@ public class CarrierResourceIT {
     @Test
     public void fetchCarrierByResourceLocationExistingCarrierMatchingCarrierReturned() throws Exception {
 
-        String data = createAndFetchCarrier();
-        System.out.println("RESPONSE: " + data);
-        assertNotNull(data);
+        for (int i = 1; i < 4; i++) {
+            Carrier carrier = createAndFetchCarrier();
+            Driver driver = createAndFetchDriver();
+            Long carrierCurrId = fetchCurrentCarrierId();
+            Long carrierNextId = fetchNextCarrierId();
+            Long driverCurrId = fetchCurrentDriverId();
+            Long driverNextId = fetchNextDriverId();
+
+            System.out.println("CREATED CARRIER: " + i + " ID: " + carrier.getId());
+            System.out.println("CURRENT CARRIER SEQ VAL: " + carrierCurrId);
+            System.out.println("NEXT CARRIER SEQ VAL: " + carrierNextId);
+            System.out.println("\n");
+            System.out.println("CREATED DRIVER : " + i + " ID: " + driver.getId());
+            System.out.println("CURRENT DRIVER SEQ VAL: " + driverCurrId);
+            System.out.println("NEXT DRIVER SEQ VAL: " + driverNextId);
+            System.out.println("\n");
+
+        }
 
     }
 
     @Test
-    public void createAndFetchCarrierManyThreads() throws InterruptedException {
+    public void createAndFetchCarrierManyThreads() throws Exception {
 
         int nThreads = N_THREADS;
         CountDownLatch latch = new CountDownLatch(nThreads);
         Runnable run = () -> {
-            String data = createAndFetchCarrier();
-            assertNotNull(data);
-            System.out.println("Request OK, Response: " + data);
-            latch.countDown();
+            try {
+                fetchCarrierByResourceLocationExistingCarrierMatchingCarrierReturned();
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+            finally {
+                latch.countDown();
+            }
         };
         ExecutorService tp = Executors.newFixedThreadPool(nThreads);
         for (int i = 0; i < nThreads; i++) {
@@ -81,13 +103,61 @@ public class CarrierResourceIT {
         }
     }
 
-    private String createAndFetchCarrier() {
+    private Carrier createAndFetchCarrier() {
 
-        WebTarget target = tut.path(UUID.randomUUID().toString());
+        WebTarget target = tut.path("carrier/" + UUID.randomUUID().toString());
 
         Response response = target.request(MediaType.APPLICATION_JSON).get();
+        Carrier carrier = response.readEntity(Carrier.class);
         assertEquals(response.getStatus(), 200);
-        return response.readEntity(String.class);
+        return carrier;
+
+    }
+
+    private Long fetchCurrentCarrierId() {
+
+        WebTarget target = tut.path("carrier-id/currentval");
+
+        Response response = target.request(MediaType.APPLICATION_JSON).get();
+        return response.readEntity(Long.class);
+
+    }
+
+    private Long fetchNextCarrierId() {
+
+        WebTarget target = tut.path("carrier-id/nextval");
+
+        Response response = target.request(MediaType.APPLICATION_JSON).get();
+        return response.readEntity(Long.class);
+
+    }
+
+    private Long fetchCurrentDriverId() {
+
+        WebTarget target = tut.path("driver-id/currentval");
+
+        Response response = target.request(MediaType.APPLICATION_JSON).get();
+        return response.readEntity(Long.class);
+
+    }
+
+    private Long fetchNextDriverId() {
+
+        WebTarget target = tut.path("driver-id/nextval");
+
+        Response response = target.request(MediaType.APPLICATION_JSON).get();
+        return response.readEntity(Long.class);
+
+    }
+
+    private Driver createAndFetchDriver() {
+
+        WebTarget target = tut.path("driver/" + UUID.randomUUID().toString());
+
+        Response response = target.request(MediaType.APPLICATION_JSON).get();
+        Driver driver = response.readEntity(Driver.class);
+        assertEquals(response.getStatus(), 200);
+        return driver;
 
     }
 

@@ -15,4 +15,8 @@ public interface CarrierRepository {
 
     Carrier save(Carrier carrier);
 
+    Long nextId();
+
+    Long currentId();
+
 }

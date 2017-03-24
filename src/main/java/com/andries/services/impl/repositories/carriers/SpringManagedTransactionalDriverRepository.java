@@ -1,11 +1,9 @@
 package com.andries.services.impl.repositories.carriers;
 
-import com.andries.services.api.repositories.carriers.CarrierRepository;
-import com.andries.services.api.resources.carriers.Carrier;
-import com.andries.services.exceptions.ResourceCreateOrUpdateFailedException;
+import com.andries.services.api.repositories.carriers.DriverRepository;
+import com.andries.services.api.resources.carriers.Driver;
 import com.andries.services.impl.qualifiers.RepositoryQualifier;
 import com.andries.services.impl.qualifiers.RepositoryType;
-import com.andries.util.MGRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -13,57 +11,59 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.math.BigDecimal;
 import java.util.List;
 
 /**
- * Created by Andries on 8/18/16.
+ * @author Andries on 3/24/17.
  */
 @RepositoryQualifier(value = RepositoryType.SPRING_MANAGED_TRANSACTIONAL)
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @Repository
 @Service
-public class SpringManagedTransactionalCarrierRepository implements CarrierRepository {
+public class SpringManagedTransactionalDriverRepository implements DriverRepository {
 
-    private static final Logger logger = LoggerFactory.getLogger(SpringManagedTransactionalCarrierRepository.class);
+    private static final Logger logger = LoggerFactory.getLogger(SpringManagedTransactionalDriverRepository.class);
 
     @PersistenceContext(unitName="CMS")
     private EntityManager em;
 
     @Override
-    public Carrier save(Carrier carrier) {
+    public Driver save(Driver driver) {
 
-        logger.info("INVOKING save(..) with Carrier: {}", carrier);
+        logger.info("INVOKING save(..) with Driver: {}", driver);
 
-        return  em.merge(carrier);
+        return  em.merge(driver);
 
     }
 
     @Override
-    public List<Carrier> findAll() {
+    public List<Driver> findAll() {
 
         logger.info("INVOKING findAll()..");
 
-        TypedQuery<Carrier> query = em
-                .createNamedQuery("Carrier.findAll", Carrier.class);
+        TypedQuery<Driver> query = em
+                .createNamedQuery("Driver.findAll", Driver.class);
 
-        List<Carrier> result = query.getResultList();
+        List<Driver> result = query.getResultList();
 
-        logger.info("FOUND Carriers() {}", result);
+        logger.info("FOUND Drivers() {}", result);
 
         return result;
     }
 
     @Override
-    public Carrier getOne(Long id) {
+    public Driver getOne(Long id) {
 
-        logger.info("INVOKING getCarrier(..) with ID: {}", id);
+        logger.info("INVOKING getDriver(..) with ID: {}", id);
 
-        Carrier carrier = em
-                .find(Carrier.class, id);
+        Driver driver = em
+                .find(Driver.class, id);
 
-        return carrier;
+        return driver;
 
     }
 

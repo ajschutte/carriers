@@ -1,7 +1,7 @@
 package com.andries.services.impl.repositories.carriers;
 
-import com.andries.services.api.repositories.carriers.CarrierRepository;
-import com.andries.services.api.resources.carriers.Carrier;
+import com.andries.services.api.repositories.carriers.DriverRepository;
+import com.andries.services.api.resources.carriers.Driver;
 import com.andries.services.exceptions.ResourceCreateOrUpdateFailedException;
 import com.andries.services.impl.qualifiers.RepositoryQualifier;
 import com.andries.services.impl.qualifiers.RepositoryType;
@@ -12,34 +12,33 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-import java.math.BigDecimal;
 import java.util.List;
 
 /**
- * Created by Andries on 11/10/16.
+ * @author Andries on 3/24/17.
  */
 @RepositoryQualifier(value = RepositoryType.MG_REQUEST_TRANSACTIONAL)
 @Service
-public class ClientManagedCarrierRepository implements CarrierRepository {
+public class ClientManagedDriverRepository implements DriverRepository {
 
-    private static final Logger logger = LoggerFactory.getLogger(ClientManagedCarrierRepository.class);
+    private static final Logger logger = LoggerFactory.getLogger(ClientManagedDriverRepository.class);
 
     @Override
-    public Carrier save(Carrier carrier) {
+    public Driver save(Driver driver) {
 
-        logger.info("INVOKING save(..) with Carrier: {}", carrier);
+        logger.info("INVOKING save(..) with Driver: {}", driver);
 
         MGRequest mgr = null;
 
         try {
             mgr = new MGRequest();
-            return saveCarrier(mgr.getEntityManager(), carrier);
+            return saveDriver(mgr.getEntityManager(), driver);
         }
         catch (Throwable th) {
 
-            logger.error("ERROR invoking save(..) with Carrier..", th);
+            logger.error("ERROR invoking save(..) with Driver..", th);
 
-            throw new ResourceCreateOrUpdateFailedException("Carrier could not be saved..." + carrier, th);
+            throw new ResourceCreateOrUpdateFailedException("Driver could not be saved..." + driver, th);
         }
         finally {
             if (mgr != null) {
@@ -100,16 +99,16 @@ public class ClientManagedCarrierRepository implements CarrierRepository {
     }
 
     @Override
-    public List<Carrier> findAll() {
+    public List<Driver> findAll() {
 
         MGRequest mgr  = new MGRequest();
         EntityManager em = mgr.getEntityManager();
 
         try {
             em.getTransaction().begin();
-            TypedQuery<Carrier> query = em
-                    .createNamedQuery("Carrier.findAll", Carrier.class);
-            List<Carrier> result = query.getResultList();
+            TypedQuery<Driver> query = em
+                    .createNamedQuery("Driver.findAll", Driver.class);
+            List<Driver> result = query.getResultList();
             em.getTransaction().commit();
             return result;
         }
@@ -126,7 +125,7 @@ public class ClientManagedCarrierRepository implements CarrierRepository {
     }
 
     @Override
-    public Carrier getOne(Long id) {
+    public Driver getOne(Long id) {
         return null;
     }
 
@@ -134,8 +133,7 @@ public class ClientManagedCarrierRepository implements CarrierRepository {
 
         try {
             em.getTransaction().begin();
-            Long nextId = ((BigDecimal)em.createNativeQuery("select CARRIER_SEQ.NEXTVAL from DUAL")
-                    .getSingleResult()).longValue();
+            Long nextId = (Long)em.createNativeQuery("select DRIVER_SEQ.NEXTVAL from DUAL").getSingleResult();
             em.getTransaction().commit();
             return nextId;
         }
@@ -152,8 +150,7 @@ public class ClientManagedCarrierRepository implements CarrierRepository {
 
         try {
             em.getTransaction().begin();
-            Long nextId = ((BigDecimal)em.createNativeQuery("select CARRIER_SEQ.CURRVAL from DUAL")
-                    .getSingleResult()).longValue();
+            Long nextId = (Long)em.createNativeQuery("select DRIVER_SEQ.CURRENTVAL from DUAL").getSingleResult();
             em.getTransaction().commit();
             return nextId;
         }
@@ -166,11 +163,11 @@ public class ClientManagedCarrierRepository implements CarrierRepository {
 
     }
 
-    private Carrier saveCarrier(EntityManager em, Carrier carrier) {
+    private Driver saveDriver(EntityManager em, Driver driver) {
 
         try {
             em.getTransaction().begin();
-            Carrier saved = em.merge(carrier);
+            Driver saved = em.merge(driver);
             em.getTransaction().commit();
             return saved;
         }
